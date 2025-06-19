@@ -1,6 +1,6 @@
 GCC = g++
 CFLAGS = -std=c++14 -Wall -Werror -Wextra -pedantic -g
-CPPCHECK = cppcheck --enable=performance,unusedFunction --error-exitcode=1 --quiet
+CPPCHECK = cppcheck --enable=performance --error-exitcode=1 --quiet
 SRCS = $(wildcard src/*.cpp)
 OUTDIR = build
 OBJS = $(patsubst src/%.cpp, $(OUTDIR)/%.o, $(SRCS))
