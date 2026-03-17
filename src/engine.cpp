@@ -72,6 +72,7 @@ void Engine::thread_func() {
 
     parse_file(file_ref);
     m_active--;
+    m_cv.notify_all();
   }
 }
 
