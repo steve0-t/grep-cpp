@@ -1,4 +1,5 @@
 #pragma once
+#include <utility>
 #ifndef THREAD_POOL_H
 #define THREAD_POOL_H
 
@@ -7,16 +8,18 @@
 
 #include <atomic>
 #include <cstddef>
-#include <cstdint>
 #include <cstring>
 #include <dirent.h>
+#include <fcntl.h>
 #include <iostream>
 #include <mutex>
 #include <queue>
 #include <string.h>
 #include <string>
+#include <sys/stat.h>
 #include <thread>
-#include <unordered_map>
+#include <unistd.h>
+#include <utility>
 #include <vector>
 
 typedef struct file_ref {
@@ -26,27 +29,34 @@ typedef struct file_ref {
 
 class Engine {
 public:
-  Engine(size_t nthreads, const std::string &search);
+  Engine(const std::string &path, const std::string &search);
   ~Engine();
+
+private:
   void parse_dirs(const std::string &path);
-  void add_file(const std::string &path, const std::string &filename);
-  [[nodiscard]] std::size_t add_dir(const std::string &pathname);
+
+  void add_file(const int &fd, const std::string &pathname);
+
   void thread_func();
-  void parse_file(const std::string &pathname);
+
+  void parse_file(const std::pair<int, std::string> &pair);
+
   void wait();
 
 private:
-  std::size_t m_nthreads;
+  const std::string path;
   const std::string needle;
+  std::size_t m_nthreads;
+
   std::atomic_bool stop;
   std::atomic_bool found;
+  std::atomic_int m_active;
+
   std::mutex m_mutex;
   std::condition_variable m_cv;
   std::vector<std::thread> m_workers;
 
-  std::queue<file_ref_t> file_names;
-  std::unordered_map<std::string, std::size_t> dir_name_map;
-  std::vector<std::string> dir_names;
+  std::queue<std::pair<int, std::string>> fds;
 };
 
 #endif

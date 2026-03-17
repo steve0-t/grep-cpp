@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/nix/store/l9k32vj2aczxw62134j1x0dsh569jz2l-bash-5.2p37/bin/bash -e
 
 # Check if running as root
 if [ "$EUID" -eq 0 ]; then
