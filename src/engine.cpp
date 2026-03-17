@@ -64,7 +64,7 @@ void Engine::thread_func() {
     m_active++;
     fds.pop();
 
-    std::cout << "Is fds empty: " << fds.empty() << "\n";
+    // std::cout << "Is fds empty: " << fds.empty() << "\n";
     if (fds.empty())
       m_cv.notify_all();
 

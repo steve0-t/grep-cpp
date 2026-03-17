@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
   //     path.append("/");
   // #endif
 
-  std::cout << "this is path: " << path << '\n';
+  // std::cout << "this is path: " << path << '\n';
 
   Engine engine(path, needle);
 
